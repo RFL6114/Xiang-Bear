@@ -1,0 +1,546 @@
+/* ========== 全局重置 ========== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: #FEFDE9;
+  color: #2E241F;
+  font-family: 'Irish Grover', cursive, sans-serif;
+  overflow-x: auto;
+  cursor: none; /* 👈 隐藏系统默认鼠标指针 */
+}
+
+/* 但是，在某些需要文字输入的地方，通常还是保留默认指针比较好 */
+input, textarea {
+  cursor: text;
+}
+
+
+
+/* ========== 通用顶部导航 ========== */
+.hud {
+  position: absolute; top: 0; left: 0; width: 100%;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 24px 48px; z-index: 100;
+}
+.hud-title { font-size: 24px; }
+.nav-links { display: flex; gap: 32px; }
+.nav-links a { text-decoration: none; color: #2E241F; font-size: 16px; transition: color 0.3s; }
+.nav-links a:hover { color: #CC5500; }
+.hud-progress { display: flex; align-items: center; gap: 8px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: #5B7E61; opacity: 0.3; }
+.dot.filled { background: #CC5500; opacity: 1; }
+.hud-count { font-size: 16px; color: #CC5500; margin-left: 8px; }
+
+/* ========== 1. 首屏 Hero（扁平化设计，无投影） ========== */
+.hero-section {
+  height: 100vh; display: flex; flex-direction: column;
+  justify-content: center; align-items: center; position: relative;
+}
+.hero-content { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 80px; }
+
+/* 标题：扁平，无橙色投影 */
+.hero-title { font-size: 80px; color: #2E241F; letter-spacing: 0.03em; margin-bottom: 32px; }
+.hero-title .letter { display: inline-block; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.hero-title:hover .letter { transform: translateY(-12px); }
+
+.hero-subtitle { font-size: 20px; color: #5B7E61; line-height: 1.8; margin-bottom: 120px; }
+
+/* 按钮：扁平，无硬阴影，无边框 */
+.start-btn {
+  background: #CC5500; color: #FEFDE9;
+  font-family: 'Irish Grover', cursive, sans-serif;
+  font-size: 22px; padding: 16px 56px;
+  border: none; border-radius: 50px;
+  cursor: pointer; box-shadow: none;
+  transition: all 0.2s ease;
+}
+.start-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(204, 85, 0, 0.3); }
+
+.scroll-hint { position: absolute; bottom: 40px; display: flex; flex-direction: column; align-items: center; gap: 12px; cursor: pointer; transition: opacity 0.3s; }
+.scroll-hint:hover { opacity: 0.7; }
+.scroll-text { font-size: 16px; color: #2E241F; letter-spacing: 0.1em; }
+.arrow { font-size: 28px; color: #CC5500; animation: bounce 2s infinite; }
+.first-stop { font-size: 14px; letter-spacing: 0.05em; color: #5B7E61; }
+@keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-10px); } 60% { transform: translateY(-5px); } }
+
+/* ========== 2. 地图页 ========== */
+.map-page { position: relative; width: 100vw; height: 100vh; background-color: #CC5500; overflow: auto; display: flex; flex-direction: column; }
+.bg-layer { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 1; }
+.parchment-wrapper { width: 997px; height: 748px; display: flex; justify-content: center; align-items: center; }
+.parchment-wrapper img { width: 748px; height: 997px; transform: rotate(90deg); object-fit: contain; opacity: 0.3; }
+.map-img { z-index: 2; }
+.map-wrapper { width: 639px; height: 791px; }
+.map-wrapper img { width: 100%; height: 100%; object-fit: contain; opacity: 0.3; }
+
+.map-hud { position: relative; z-index: 10; }
+.map-hud .hud-title, .map-hud .hud-progress .hud-count { color: #FEFDE9; }
+
+/* 默认（电脑端）：保持原来的居中，不滑动 */
+.map-content {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  display: flex;
+  justify-content: center; /* 👈 电脑端居中 */
+  align-items: center;
+  overflow: visible;       /* 👈 电脑端不需要滑动 */
+  padding: 0;
+}
+
+/* 手机端（小屏幕）：改成靠左、可滑动 */
+@media (max-width: 768px) {
+  .map-content {
+    justify-content: flex-start; /* 👈 手机端靠左，允许滑动 */
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 40px;
+  }
+  .map-content::-webkit-scrollbar { display: none; }
+}
+.cards-wrapper { position: relative; display: flex; gap: 62px; align-items: center; width: max-content; margin: 0 auto;}
+.map-card { width: 157px; height: 208px; cursor: pointer; transition: transform 0.3s ease; flex-shrink: 0;}
+.map-card img { width: 100%; height: 100%; object-fit: contain; }
+.map-card:hover { transform: translateY(-10px); }
+.decorative-text { position: absolute; bottom: 100%; right: 0; margin-bottom: 16px; font-size: 24px; color: #5c3a1e; text-align: right; line-height: 1.2; }
+
+/* ========== 3. 详情页（尺寸修正，布局紧凑对齐） ========== */
+.detail-page {
+  position: relative; width: 100vw; min-height: 100vh;
+  background-color: #5A9681; display: flex;
+  /* 👇 修改这里：两端对齐，让卡片和文字推向两边 */
+  justify-content: space-between; 
+  align-items: center; 
+  padding: 60px 120px; /* 左右留出 120px 的大空间 */
+  box-sizing: border-box;
+}
+.detail-page .hud { position: absolute; top: 0; left: 0; width: 100%; }
+.detail-page .hud-title, .detail-page .hud-count { color: #FEFDE9; }
+.detail-page .dot { background: #FEFDE9; opacity: 0.3; }
+.detail-page .dot.filled { background: #F1D998; opacity: 1; }
+
+/* 左侧大卡牌：尺寸缩小，与右侧文字高度接近 */
+.dish-card {
+  width: 560px; height: 680px; /* 尺寸缩小 */
+  border: 10px solid #F1D998; border-radius: 16px;
+  background-color: #4B403A; display: flex; flex-shrink: 0;
+}
+.dish-card-inner { display: flex; flex-direction: column; align-items: center; width: 100%; padding-top: 24px; text-align: center; }
+.dish-title { font-size: 32px; color: #FEFDE9; margin-bottom: 16px; font-weight: normal; }
+.dish-image-box {
+  width: 440px; height: 460px; /* 方块缩小 */
+  background-color: rgba(241, 217, 152, 0.9);
+  border-radius: 20px; display: flex; justify-content: center; align-items: center; overflow: hidden;
+}
+.dish-image-box img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.dish-desc { font-size: 18px; color: #FEFDE9; line-height: 1.5; margin-top: 16px; }
+
+/* 右侧文字区：对齐卡片，文字整体上移 */
+.detail-text {
+  position: relative; width: 320px; height: 680px;
+  text-align: right; color: #FEFDE9;
+  display: flex; flex-direction: column;
+  /* 👇 去掉多余的外边距，让文字自然靠右 */
+  margin-right: 40px;
+}
+.detail-para { font-size: 18px; line-height: 1.6; } /* 字号稍微缩小，防止溢出 */
+.city-name {
+  font-size: 56px; /* 字号缩小，防止“Changsha”换行 */
+  white-space: nowrap; /* 强制不换行 */
+  font-weight: normal; line-height: 1.1;
+  margin-top: 40px; margin-bottom: 60px; /* 间距缩短，文字整体上移 */
+}
+.city-name .letter { display: inline-block; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.city-name:hover .letter { transform: translateY(-12px); }
+.part-3 { margin-top: auto; } /* 推到底部，与卡片底部对齐 */
+
+/* ========== 4. 多卡牌列表页（奶油色背景） ========== */
+.multi-cards-page {
+  position: relative; width: 100vw; min-height: 100vh;
+  background-color: #FEFDE9; /* 奶油色背景 */
+  display: flex; flex-direction: column;
+  padding-top: 100px; padding-bottom: 100px; overflow: hidden;
+}
+.multi-cards-page .hud { position: absolute; top: 0; left: 0; width: 100%; }
+.multi-cards-page .hud-title, .multi-cards-page .hud-count { color: #2E241F; } /* 奶油色上黑字 */
+.multi-cards-page .dot { background: #5B7E61; opacity: 0.3; }
+.multi-cards-page .dot.filled { background: #CC5500; opacity: 1; }
+
+.cards-row { display: flex; justify-content: center; gap: 32px; margin-top: 40px; z-index: 10; position: relative; }
+.dish-card-small {
+  width: 320px; height: 440px;
+  border-radius: 16px;
+  background-color: #CC5500; cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); ; position: relative; overflow: hidden;
+  
+  /* 👇 就是加下面这两行 👇 */
+  display: block;        /* 让 a 标签表现得像方块 */
+  text-decoration: none; /* 去掉 a 标签自带的蓝色下划线 */
+}
+.dish-card-small:hover { transform: translateY(-12px) rotate(2deg); 
+box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(241, 217, 152, 0.6); /* 加一层黄色的发光 */
+  border-color: #F1D998; /* 边框更亮 */
+}
+.dish-card-small .dish-card-inner { padding: 24px; display: flex; justify-content: center; align-items: center; height: 100%; }
+.small-image-box { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+.small-image-box img { max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.3s ease;
+}
+.dish-card-small:hover .small-image-box img {
+  transform: scale(1.1); /* 里面的图案放大 */ }
+
+/* 悬浮卡片气泡（有文字，有手绘硬阴影） */
+.city-tooltip {
+  position: fixed; /* 改为 fixed 脱离文档流，方便定位 */
+  background: #F1D998; color: #2E241F;
+  padding: 20px 32px; border-radius: 20px;
+  border: 3px solid #4B403A; 
+  box-shadow: 8px 8px 0 rgba(75, 64, 58, 0.8); /* 手绘硬阴影 */
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  max-width: 280px; line-height: 1.5; white-space: normal;
+  pointer-events: none; opacity: 0;
+  transform: translate(-50%, -80%) scale(0.8); /* 初始隐藏状态 */
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 1000;
+}
+.city-tooltip .tooltip-city { font-size: 24px; font-weight: bold; margin-bottom: 8px; color: #CC5500; }
+.city-tooltip .tooltip-clue { font-size: 16px; color: #2E241F; }
+
+/* ========== 湘西详情页专属的橙色背景 ========== */
+.orange-bg {
+  background-color: #CC5500 !important; /* 使用 !important 强制覆盖原有的绿色 */
+}
+
+/* 橙色背景下的文字和进度点颜色适配 */
+.orange-bg .hud-title,
+.orange-bg .hud-count,
+.orange-bg .detail-text,
+.orange-bg .dish-title,
+.orange-bg .dish-desc {
+  color: #FEFDE9; /* 统一用奶油色，和截图一致 */
+}
+
+/* 橙色背景下的进度点 */
+.orange-bg .dot {
+  background: #FEFDE9;
+  opacity: 0.3;
+}
+.orange-bg .dot.filled {
+  background: #F1D998;
+  opacity: 1;
+}
+/* ================= 结局页 (Ending Page) ================= */
+
+/* 第一屏：深褐色 */
+.ending-screen {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-screen {
+  background-color: #4B403A; /* 深褐色 */
+  color: #FEFDE9; /* 奶油色字 */
+}
+
+.ending-text {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.ending-text h2 {
+  font-size: 48px;
+  font-weight: normal;
+  margin-bottom: 16px;
+}
+
+.ending-text p {
+  font-size: 20px;
+  opacity: 0.8;
+}
+
+/* 按钮：扁平化，符合整体风格 */
+.ending-btn {
+  background: #FEFDE9;
+  color: #4B403A;
+  font-family: 'Irish Grover', cursive, sans-serif;
+  font-size: 18px;
+  padding: 14px 40px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 60px;
+}
+.ending-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(254, 253, 233, 0.2);
+}
+
+.marquee-wrapper {
+  position: absolute;
+  bottom: 60px;
+  width: 100vw; /* 👈 确保铺满屏幕宽度 */
+  overflow: hidden; /* 👈 防止横向溢出出现滚动条 */
+}
+.marquee-content {
+  display: flex;
+  gap: 40px;
+  animation: scrollMarquee 15s linear infinite;
+  width: max-content; /* 允许内容撑开 */
+  padding-bottom: 20px;
+}
+
+/* 鼠标悬停时暂停滚动 */
+.marquee-wrapper:hover .marquee-content {
+  animation-play-state: paused;
+}
+
+.marquee-content img {
+  width: 60px;
+  height: auto;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.marquee-content img:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.marquee-hint {
+  font-size: 12px;
+  color: #FEFDE9;
+  opacity: 0.5;
+  margin-top: 10px;
+}
+
+/* 轮播滚动的关键帧 */
+@keyframes scrollMarquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* 因为图片重复了一遍，所以移动 50% 刚好无缝 */
+}
+
+/* 第二屏：绿色 */
+.green-screen {
+  background-color: #5A9681; /* 灰绿色 */
+  color: #2E241F;
+}
+
+.green-symbol {
+  margin-bottom: 32px;
+  /* 加一点轻微的旋转动画，让静止的画面活起来 */
+  animation: floatSymbol 4s ease-in-out infinite;
+}
+
+.green-symbol img {
+  width: 180px;
+  height: auto;
+  object-fit: contain;
+}
+
+@keyframes floatSymbol {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(3deg); }
+}
+
+.green-text {
+  font-size: 20px;
+  text-align: center;
+  line-height: 1.6;
+  color: #FEFDE9;
+}
+
+/* 第三屏：奶油色页脚 */
+.ending-footer {
+  background-color: #FEFDE9;
+  padding: 60px 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #2E241F;
+}
+
+.footer-left h3 {
+  font-size: 24px;
+  font-weight: normal;
+  max-width: 400px;
+  line-height: 1.3;
+}
+
+.footer-center {
+  display: flex;
+  gap: 32px;
+}
+
+.footer-center a {
+  text-decoration: none;
+  color: #2E241F;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+.footer-center a:hover {
+  color: #CC5500;
+}
+
+.footer-right p {
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+ /* ========== 湘中详情页专属的深褐色背景 ========== */
+.brown-bg {
+  background-color: #4B403A !important; /* 使用深褐色，与之前页面区分开 */
+}
+
+/* 深褐色背景下的文字适配 */
+.brown-bg .hud-title,
+.brown-bg .hud-count,
+.brown-bg .detail-text,
+.brown-bg .dish-title,
+.brown-bg .dish-desc {
+  color: #FEFDE9; /* 统一用奶油色，和截图一致 */
+}
+
+/* 深褐色背景下的进度点 */
+.brown-bg .dot {
+  background: #FEFDE9;
+  opacity: 0.3;
+}
+.brown-bg .dot.filled {
+  background: #F1D998; /* 亮黄色 */
+  opacity: 1;
+}
+
+/* 点击时的弹跳动画 */
+@keyframes cardClick {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.9) rotate(-3deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+.dish-card-small:active {
+  animation: cardClick 0.3s ease;
+}
+
+/* ================= 鼠标跟随特效 ================= */
+.cursor-follower {
+  position: fixed; /* 固定定位，浮在所有内容上方 */
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  pointer-events: none; /* ⚠️ 极其重要！必须写，否则鼠标无法点击下面的按钮 */
+  z-index: 9999;
+  /* 平滑跟随：让图标有一点延迟，产生“尾随”的可爱感 */
+  transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+  transform: translate(-50%, -50%) scale(1) rotate(0deg); /* 初始状态 */
+}
+
+.cursor-follower img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 鼠标悬停在可交互元素上时，小图标旋转并变大 */
+.cursor-follower.hovering {
+  transform: translate(-50%, -50%) scale(1.4) rotate(-15deg);
+  /* 如果想换颜色，可以给图标加个滤镜，比如变红 */
+  /* filter: hue-rotate(90deg); */
+}
+
+/* 鼠标按下时，稍微缩小 */
+.cursor-follower.clicking {
+  transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+}
+
+/* ================= 详情页专属移动端适配 ================= */
+@media (max-width: 768px) {
+  /* 1. 禁止左右滑动 */
+  body, html {
+    overflow-x: hidden;
+  }
+
+  /* 2. 顶部导航栏适配 */
+  .hud {
+    padding: 15px 20px !important;
+  }
+  .nav-links {
+    display: none !important; /* 手机端隐藏顶部菜单，保持干净 */
+  }
+
+  /* 3. 详情页主容器：改为上下垂直排列 */
+  .detail-page {
+    flex-direction: column !important;
+    padding: 80px 20px 40px !important;
+    gap: 30px !important;
+    min-height: 100vh;
+  }
+
+  /* 4. 左侧大卡牌：宽度自适应 */
+  .dish-card {
+    width: 90vw !important;
+    height: auto !important;
+    margin: 0 auto !important;
+  }
+  .dish-image-box {
+    width: 90% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1; /* 保持正方形 */
+  }
+
+  /* 5. 右侧文字区：宽度自适应，文字居中 */
+  .detail-text {
+    width: 90vw !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+  }
+  
+  /* 6. 标题与段落字号缩小 */
+  .city-name {
+    font-size: 36px !important;
+    margin: 20px 0 !important;
+    white-space: normal !important; /* 允许换行，防止溢出 */
+  }
+  .detail-para {
+    font-size: 16px !important;
+  }
+
+  /* 7. 右下角提示文字：手机端不用强制推到底部，跟随排版流即可 */
+  .part-3 {
+    margin-top: 30px !important;
+  }
+
+  /* 8. 结局页（You've found the taste of Hunan）适配 */
+  .ending-text h2 {
+    font-size: 28px !important;
+  }
+  .ending-text p {
+    font-size: 16px !important;
+  }
+  .ending-btn {
+    padding: 12px 30px !important;
+    font-size: 16px !important;
+  }
+  .ending-footer {
+    flex-direction: column !important;
+    padding: 30px 20px !important;
+    text-align: center;
+    gap: 20px;
+  }
+  .footer-center {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+/* 新增：街巷探索与第一人称烹饪试玩入口 */
+.street-game-entry{margin-top:18px;display:inline-flex;align-items:center;gap:14px;padding:12px 24px;background:#f1d998;color:#39291e;text-decoration:none;border:3px solid #39291e;border-radius:12px;font-size:17px;font-weight:bold;box-shadow:4px 4px 0 #8b5b35;transition:transform .15s,box-shadow .15s;cursor:pointer}
+.street-game-entry:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 #8b5b35}

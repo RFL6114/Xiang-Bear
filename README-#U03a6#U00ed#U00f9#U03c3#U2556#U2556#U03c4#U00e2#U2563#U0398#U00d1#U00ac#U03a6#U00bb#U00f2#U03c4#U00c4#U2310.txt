@@ -1,0 +1,30 @@
+湘味寻踪：街巷探索 + 第一人称烹饪试玩
+
+打开方式：
+1. 解压整个文件夹。
+2. 双击 index.html 打开原始网站。
+3. 首页新增“进入街巷互动试玩”入口，打开 gameplay.html 体验新玩法。
+
+目前可交互内容：
+- 街巷里点击店铺可移动角色到店铺附近；键盘 ← / → 移动，↑ 行走，空格停止。
+- 靠近店铺后点击“进入店铺”或按 Enter 进入第一人称烹饪。
+- 烹饪界面使用 assets/food-cards/ 中的四张 WEBP 食材卡牌，可选牌、下锅、搅拌和调整火候。
+- 左上角保留街巷总览小地图。
+
+摄像头手势接入：
+街巷试玩页现已内置 MediaPipe Hands 摄像头入口（需允许摄像头权限，并通过 localhost 或 HTTPS 运行）。
+手势映射：握拳持续沿角色朝向行走；食指向左/向右指，角色原地转向（不再瞬移）；张开手掌停止；双指确认/进入店铺/投料；三指搅拌；四指调整火候。识别方向依据食指尖相对掌指关节的横向方向，而不是手在摄像头画面里的绝对位置。
+如果你仍想沿用项目其他页面的识别器，也保留了桥接接口，可调用：
+  window.handleRecognizedGesture('walk')
+  window.handleRecognizedGesture('stop')
+  window.handleRecognizedGesture('left')
+  window.handleRecognizedGesture('right')
+  window.handleRecognizedGesture('confirm')
+  window.handleRecognizedGesture('stir')
+  window.handleRecognizedGesture('fire')
+
+也可以派发事件：
+  window.dispatchEvent(new CustomEvent('foodwars:gesture', { detail: { gesture: 'walk' } }));
+
+重要说明：
+用户提供的原始文件中目前可见的是原生 HTML/CSS，没有找到摄像头识别器的源码，因此此包先提供稳定的游戏交互与接入桥；要让真实摄像头识别直接控制新场景，需要把上面接口接到原有识别回调。无需重新实现摄像头识别模型。

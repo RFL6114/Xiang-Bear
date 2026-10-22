@@ -1,0 +1,4 @@
+Layout correction (2026-10-22)
+- Keeps the street exploration scene in a wide 2:1 composition on narrow/portrait viewports.
+- Prevents the painted market background from being enlarged/cropped to a single storefront.
+- Preserves the full four-shop street overview and existing mini-map/player/interaction overlays.

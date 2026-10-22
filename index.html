@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Hunan Flavor Hunt</title>
+  
+  <!-- 引入手绘字体 Irish Grover -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ================= 1. 首屏 Hero 区域 ================= -->
+  <main class="hero-section" id="hero">
+    <header class="hud">
+      <nav class="nav-links">
+        <a href=" ">Flavors</a >
+        <a href="#">Map</a >
+        <a href="#">Stories</a >
+        <a href="#">About</a >
+      </nav>
+      <div class="hud-progress">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="hud-count">0/5</span>
+      </div>
+    </header>
+
+    <div class="hero-content">
+      <h1 class="hero-title">Hunan Flavor Hunt</h1>
+      <p class="hero-subtitle">
+        The taste of Hunan hides in its mountains and rivers.<br>
+        Scroll down and find it.
+      </p >
+      <button class="start-btn" onclick="scrollToMap()">Start the Hunt</button>
+      <a class="street-game-entry" href="gameplay.html">进入街巷互动试玩 <span>→</span></a>
+    </div>
+
+    <div class="scroll-hint" id="scrollHint">
+      <span class="scroll-text">Scroll Down</span>
+      <span class="arrow">↓</span>
+      <span class="first-stop">First Stop</span>
+    </div>
+  </main>
+
+  <!-- ================= 2. 地图页 ================= -->
+  <section class="map-page" id="mapPage">
+    <div class="bg-layer parchment-img">
+      <div class="parchment-wrapper">
+        <img src="images/parchment.webp" alt="Parchment" />
+      </div>
+    </div>
+
+    <div class="bg-layer map-img">
+      <div class="map-wrapper">
+        <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180535/map-outline.webp" alt="Hunan Map" />
+      </div>
+    </div>
+
+    <header class="hud map-hud">
+      <div class="hud-title">Hunan Flavor Hunt</div>
+      <div class="hud-progress">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="hud-count">0/5</span>
+      </div>
+    </header>
+
+    <main class="map-content">
+      <div class="cards-wrapper">
+        <!-- 点击第一张卡牌进入详情页 -->
+        <div class="map-card" onclick="scrollToDetail()"><img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180532/card-4.webp" alt="Changsha" /></div>
+        <div class="map-card"><img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180532/card-4.webp" alt="Xiangxi" /></div>
+        <div class="map-card"><img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180532/card-4.webp" alt="Central Hunan" /></div>
+        <div class="map-card"><img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180532/card-4.webp" alt="Southern Hunan" /></div>
+        <div class="map-card"><img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180532/card-4.webp" alt="Dongting Lake" /></div>
+
+        <div class="decorative-text">
+          click the remaining<br>
+          cards<br>
+          to reveal
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <!-- ================= 3. 详情页 ================= -->
+  <section class="detail-page" id="detailPage">
+    <header class="hud map-hud">
+      <div class="hud-title">Hunan Flavor Hunt</div>
+      <div class="hud-progress">
+        <span class="dot filled"></span>
+        <span class="dot filled"></span>
+        <span class="dot filled"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="hud-count">3/5</span>
+      </div>
+    </header>
+
+    <!-- 左侧大卡牌（尺寸缩小，与右侧文字高度对齐） -->
+    <div class="dish-card">
+      <div class="dish-card-inner">
+        <h2 class="dish-title">Chopped Chili Fish Head</h2>
+        <div class="dish-image-box">
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180534/fish-head.webp" alt="Chopped Chili Fish Head" />
+        </div>
+        <p class="dish-desc">
+          Steam fish head with chopped<br>
+          chilies, ginger, and garlic; top with<br>
+          hot oil and scallions.
+        </p >
+      </div>
+    </div>
+
+    <!-- 右侧文字区（文字整体上移，字号缩小防止换行） -->
+    <div class="detail-text">
+      <p class="detail-para">
+        Hunan chopped chili<br>
+        fish head is steamed<br>
+        fish head topped<br>
+        with chopped salted<br>
+        chilies. It's spicy,<br>
+        savory, tender, and<br>
+        best served with<br>
+        rice.
+      </p >
+
+      <h1 class="city-name" id="cityName">Changsha</h1>
+
+      <p class="detail-para part-2">
+        It's bright red and<br>
+        glossy. Every Hunan<br>
+        host orders it.
+      </p >
+
+      <p class="detail-para part-3">
+        Click the<br>
+        remaining cards<br>
+        to replace them.
+      </p >
+    </div>
+  </section>
+
+  <!-- ================= 4. 多卡牌列表页（奶油色背景） ================= -->
+  <section class="multi-cards-page" id="multiCardsPage">
+    <header class="hud map-hud">
+      <div class="hud-title">Hunan Flavor Hunt</div>
+      <div class="hud-progress">
+        <span class="dot filled"></span>
+        <span class="dot filled"></span>
+        <span class="dot filled"></span>
+        <span class="dot filled"></span>
+        <span class="dot"></span>
+        <span class="hud-count">4/5</span>
+      </div>
+    </header>
+
+    <div class="cards-row">
+      <!-- 卡牌 1：长沙（点击回到顶部） -->
+      <div class="dish-card-small" id="cardChangsha" data-city="Changsha" data-clue="It's bright red and glossy.">
+        <div class="dish-card-inner">
+          <div class="small-image-box">
+            <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180532/card-4.webp" alt="Changsha Pattern" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 卡牌 2：湘西（点击滑到下方） -->
+      <div class="dish-card-small" id="cardXiangxi" data-city="Xiangxi" data-clue="Smoked all winter in the mountains.">
+        <div class="dish-card-inner">
+          <div class="small-image-box">
+            <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180532/card-4.webp" alt="Xiangxi Pattern" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 卡牌 3：湘中（点击跳转到新界面） -->
+      <a class="dish-card-small" id="cardCentral" href="central-hunan.html" data-city="Central Hunan" data-clue="Red, shiny, melts in your ...">
+        <div class="dish-card-inner">
+          <div class="small-image-box">
+            <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180532/card-4.webp" alt="Central Hunan Pattern" />
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- 悬浮气泡（显示地名和线索） -->
+    <div class="city-tooltip" id="cityTooltip"></div>
+  </section>
+  <!-- ================= 5. 详情页 (湘西腊肉) ================= -->
+  <section class="detail-page orange-bg" id="detailPageXiangxi">
+    
+    <header class="hud map-hud">
+      <div class="hud-title">Hunan Flavor Hunt</div>
+      <div class="hud-progress">
+        <!-- 5个点全亮，进度显示 5/5 -->
+        <span class="dot filled"></span>
+        <span class="dot filled"></span>
+        <span class="dot filled"></span>
+        <span class="dot filled"></span>
+        <span class="dot filled"></span>
+        <span class="hud-count">5/5</span>
+      </div>
+    </header>
+
+    <!-- 左侧大卡牌 -->
+    <div class="dish-card">
+      <div class="dish-card-inner">
+        <h2 class="dish-title">Xiangxi bacon</h2>
+        
+        <div class="dish-image-box">
+          <!-- ⚠️ 你需要把湘西腊肉的图片放进 images 文件夹，命名 xiangxi-bacon.png -->
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180436/xiangxi-bacon.webp" alt="Xiangxi bacon" />
+        </div>
+        
+        <p class="dish-desc">
+          Xiangxi bacon is pork cured with salt<br>
+          and smoked over a wood fire.
+        </p >
+      </div>
+    </div>
+
+    <!-- 右侧文字信息区 -->
+    <div class="detail-text">
+      <p class="detail-para">
+        It has a deep smoky<br>
+        aroma, firm texture, and<br>
+        rich savory flavor. Slice<br>
+        it thin and stir-fry with<br>
+        garlic sprouts or chili<br>
+        peppers for a classic<br>
+        Hunan dish.
+      </p >
+
+      <h1 class="city-name" id="cityNameXiangxi">Xiangxi</h1>
+
+      <p class="detail-para part-2">
+        Smoked all winter in the<br>
+        deep mountains.
+      </p >
+
+      <p class="detail-para part-3">
+        Click the<br>
+        remaining cards<br>
+        to replace them.
+      </p >
+    </div>
+  </section>
+
+  <!-- ================= 5. 结局页 (Ending Page) ================= -->
+  <section class="ending-page" id="endingPage">
+
+    <!-- 第一部分：深褐色（第一屏） -->
+    <div class="ending-screen dark-screen">
+      <!-- 顶部文字 -->
+      <div class="ending-text">
+        <h2>You've found the taste of Hunan.</h2>
+        <p>But Hunan's flavors are never fully found.</p >
+      </div>
+
+      <!-- 按钮（已采纳建议，改为 Hunt Again） -->
+      <button class="ending-btn" onclick="scrollToMap()">Hunt Again</button>
+
+      <!-- 图案循环轮播 -->
+      <div class="marquee-wrapper">
+        <div class="marquee-content">
+          <!-- 这里放你的手绘图标，我用了 5 张卡牌的图片做占位 -->
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790179816/baozi.webp" />
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180533/fish.webp" alt="icon" />
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180530/meat.webp" alt="icon" />
+          
+          <!-- 这里放你的手绘图标，我用了 5 张卡牌的图片做占位 -->
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790179816/baozi.webp" />
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180533/fish.webp" alt="icon" />
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180530/meat.webp" alt="icon" />
+          
+          <!-- 这里放你的手绘图标，我用了 5 张卡牌的图片做占位 -->
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790179816/baozi.webp" />
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180533/fish.webp" alt="icon" />
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180530/meat.webp" alt="icon" />
+          
+          <!-- 这里放你的手绘图标，我用了 5 张卡牌的图片做占位 -->
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790179816/baozi.webp" />
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180533/fish.webp" alt="icon" />
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180530/meat.webp" alt="icon" />
+          
+          <!-- 这里放你的手绘图标，我用了 5 张卡牌的图片做占位 -->
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790179816/baozi.webp" />
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180533/fish.webp" alt="icon" />
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180530/meat.webp" alt="icon" />
+          
+          <!-- 这里放你的手绘图标，我用了 5 张卡牌的图片做占位 -->
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790179816/baozi.webp" />
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180533/fish.webp" alt="icon" />
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180530/meat.webp" alt="icon" />
+          
+          <!-- 这里放你的手绘图标，我用了 5 张卡牌的图片做占位 -->
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790179816/baozi.webp" />
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180533/fish.webp" alt="icon" />
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180530/meat.webp" alt="icon" />
+          
+          <!-- 这里放你的手绘图标，我用了 5 张卡牌的图片做占位 -->
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790179816/baozi.webp" />
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180533/fish.webp" alt="icon" />
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180530/meat.webp" alt="icon" />
+          
+          <!-- 这里放你的手绘图标，我用了 5 张卡牌的图片做占位 -->
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790179816/baozi.webp" />
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180533/fish.webp" alt="icon" />
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180530/meat.webp" alt="icon" />
+          
+          <!-- 这里放你的手绘图标，我用了 5 张卡牌的图片做占位 -->
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790179816/baozi.webp" />
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180533/fish.webp" alt="icon" />
+          <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180530/meat.webp" alt="icon" />
+          
+
+        </div>
+        <p class="marquee-hint">Hover to pause & explore</p >
+      </div>
+    </div>
+
+    <!-- 第二部分：绿色（第二屏） -->
+    <div class="ending-screen green-screen">
+      <div class="green-symbol">
+        <!-- 这里放你的那个对称图案，我用了鱼头图片做占位，你要换成真正的那张图 -->
+        <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180535/four_fish.webp" alt="Spirit of Hunan" />
+      </div>
+      <p class="green-text">Your journey ends here.<br>Your next adventure awaits.</p >
+    </div>
+
+    <!-- 第三部分：奶油色页脚 -->
+    <footer class="ending-footer">
+      <div class="footer-left">
+        <h3>Hunan Flavor Hunt — A Taste Treasure Hunt Across Hunan</h3>
+      </div>
+      <div class="footer-center">
+        <a href=" ">Flavors</a >
+        <a href="#">Map</a >
+        <a href="#">Stories</a >
+        <a href="#">About</a >
+      </div>
+      <div class="footer-right">
+        <p>Hunan Flavor Hunt © 2025</p >
+      </div>
+    </footer>
+
+  </section>
+
+
+
+  <!-- 鼠标跟随特效 -->
+  <div class="cursor-follower" id="cursorFollower">
+    <img src="https://res.cloudinary.com/svhxeuf7/image/upload/v1790180534/cursor-icon.webp" alt="cursor" />
+  </div>
+</body>
+</html>
