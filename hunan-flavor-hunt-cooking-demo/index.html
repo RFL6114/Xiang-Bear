@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f5dfab" />
+  <title>湘味寻宝 · Food Wars 烹饪实验室</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+SC:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/cooking.css" />
+  <!-- MediaPipe Hands is used only after the user taps “开启手势”. Click/touch/drag still works without it. -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" defer></script>
+  <script src="js/cooking.js" defer></script>
+</head>
+<body>
+  <main class="game-shell">
+    <header class="topbar">
+      <div class="brand-lockup">
+        <span class="brand-stamp">湘</span>
+        <div class="brand-text">
+          <p class="eyebrow">HUNAN FLAVOR HUNT</p>
+          <h1>湘味厨房 <span>FOOD WARS!</span></h1>
+        </div>
+      </div>
+      <div class="hud-group">
+        <div class="hud-pill"><span>♨</span><span id="potCounter">0 / 2 入锅</span></div>
+        <button class="gesture-toggle" id="gestureToggle" type="button">✋ 开启手势</button>
+        <button class="icon-button" id="resetButton" type="button" aria-label="重置本局" title="重置本局">↻</button>
+      </div>
+    </header>
+
+    <section class="challenge-head">
+      <div>
+        <p class="section-kicker">FOOD WARS · 湖南风味实验</p>
+        <h2>把两张食材卡，投进锅里！</h2>
+      </div>
+      <p class="challenge-tip">点击 / 拖拽 / 手势都能入锅</p>
+    </section>
+
+    <section class="playfield" id="playfield" aria-label="烹饪游戏区域">
+      <div class="playfield-paper" aria-hidden="true"></div>
+      <img class="table-art" src="assets/scene/cooking-table.webp" alt="" draggable="false" />
+      <div class="scene-doodle doodle-left" aria-hidden="true">✦</div>
+      <div class="scene-doodle doodle-right" aria-hidden="true">✧</div>
+
+      <div class="pot-area" id="cauldronDrop" aria-label="食材投放锅区域" tabindex="0">
+        <img class="cauldron-art" id="cauldronArt" src="assets/scene/cauldron.webp" alt="正在等待食材的湘味烹饪锅" draggable="false" />
+        <div class="pot-empty-hint" id="potHint"><span>＋</span>把卡牌投进锅里</div>
+        <div class="pot-chip-row" id="potChipRow" aria-live="polite"></div>
+        <div class="pot-cooking-badge" id="potCookingBadge" hidden>
+          <span class="cooking-steam">♨</span><span id="potCookingText">大火烹调中……</span>
+          <span class="inline-progress"><i></i></span>
+        </div>
+      </div>
+
+      <div class="gesture-panel" id="gesturePanel" hidden>
+        <div class="camera-head"><span class="camera-dot" id="cameraDot"></span><strong id="cameraStatus">等待摄像头</strong><button id="stopCamera" type="button" aria-label="关闭手势摄像头">×</button></div>
+        <video id="gestureVideo" playsinline muted></video>
+        <p id="gestureFeedback">举起 1–4 根手指，保持约 0.7 秒即可投放对应食材。</p>
+      </div>
+
+      <div class="gesture-legend" id="gestureLegend">
+        <span><b>☝</b> 1 指：辣椒</span><span><b>✌</b> 2 指：猪肉</span><span><b>🤟</b> 3 指：鱼头</span><span><b>🖖</b> 4 指：腊肉</span>
+      </div>
+
+      <div class="ingredient-dock">
+        <div class="dock-heading"><span>挑选食材卡</span><em>每局任选两张 · 第二张入锅后自动开火</em></div>
+        <div class="ingredient-row" id="ingredientGrid">
+          <button class="ingredient-card" type="button" data-id="chili" data-name="辣椒" aria-label="投放辣椒卡牌" aria-pressed="false">
+            <img src="assets/ingredient-cards/chili-card.webp" alt="辣椒食材卡：攻击 3，防御 1，能量 2" draggable="false" />
+            <span class="card-in-pot">已入锅</span>
+          </button>
+          <button class="ingredient-card" type="button" data-id="pork" data-name="猪肉" aria-label="投放猪肉卡牌" aria-pressed="false">
+            <img src="assets/ingredient-cards/pork-card.webp" alt="猪肉食材卡：攻击 2，防御 2，能量 1" draggable="false" />
+            <span class="card-in-pot">已入锅</span>
+          </button>
+          <button class="ingredient-card" type="button" data-id="fish" data-name="鱼头" aria-label="投放鱼头卡牌" aria-pressed="false">
+            <img src="assets/ingredient-cards/fish-head-card.webp" alt="鱼头食材卡：攻击 4，防御 2，能量 2" draggable="false" />
+            <span class="card-in-pot">已入锅</span>
+          </button>
+          <button class="ingredient-card" type="button" data-id="bacon" data-name="湘西腊肉" aria-label="投放湘西腊肉卡牌" aria-pressed="false">
+            <img src="assets/ingredient-cards/cured-pork-card.webp" alt="湘西腊肉食材卡：攻击 3，防御 1，能量 2" draggable="false" />
+            <span class="card-in-pot">已入锅</span>
+          </button>
+        </div>
+      </div>
+      <p class="stage-status" id="stageStatus" role="status" aria-live="polite">先选一张卡牌。第二张食材投入后，锅会自动开始烹饪。</p>
+    </section>
+
+    <footer class="page-footer"><span>湘味寻宝 · HUNAN FLAVOR HUNT</span><span>挥手投料，湘味开锅 <b>♥</b></span></footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="result-overlay" id="resultOverlay" hidden>
+    <article class="result-card" role="dialog" aria-modal="true" aria-labelledby="resultName">
+      <button class="result-close icon-button" id="closeResult" type="button" aria-label="关闭结果">×</button>
+      <div class="result-sticker">新菜解锁！</div>
+      <p class="section-kicker">AI HUNAN CREATION</p>
+      <div class="result-food-icon">🍲</div>
+      <p class="result-rarity" id="resultRarity">今日限定 · 湘味创意</p>
+      <h2 id="resultName">烈焰椒香小炒肉</h2>
+      <p class="result-description" id="resultDescription"></p>
+      <div class="result-flavor"><span>湘味灵魂</span><p id="resultFlavor"></p></div>
+      <div class="result-ingredients" id="resultIngredients"></div>
+      <p class="demo-note" id="demoNote" hidden>演示模式：本地模型未连接，当前展示的是示例菜谱。</p>
+      <div class="result-actions"><button class="secondary-button" id="closeResultButton" type="button">回到锅边</button><button class="cook-button" id="newMix" type="button">换食材再来一锅 ➜</button></div>
+    </article>
+  </div>
+</body>
+</html>
