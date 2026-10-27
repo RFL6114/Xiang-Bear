@@ -18,6 +18,10 @@
         <div class="shop shop-fish" data-shop="鱼行" data-index="1"><div class="roof roof-teal"><i></i></div><div class="shop-front"><div class="shop-sign">洞庭鱼行</div><div class="shop-window fish-display">🐟<span>鲜鱼现挑</span></div><div class="door"></div><div class="shop-label">鲜鱼 · 鱼头</div></div><div class="steps"></div></div>
         <div class="shop shop-tofu" data-shop="豆腐坊" data-index="2"><div class="roof roof-gold"><i></i></div><div class="shop-front"><div class="shop-sign">巷口豆坊</div><div class="shop-window tofu-display">▰<span>每日手作</span></div><div class="door"></div><div class="shop-label">豆腐 · 豆豉</div></div><div class="steps"></div></div>
         <div class="shop shop-spice" data-shop="香料铺" data-index="3"><div class="roof roof-red"><i></i></div><div class="shop-front"><div class="shop-sign">百味香料</div><div class="shop-window spice-display">🌶️<span>一巷辛香</span></div><div class="door"></div><div class="shop-label">辣椒 · 香料</div></div><div class="steps"></div></div>
+        <div class="painted-shop-sign sign-meat" aria-hidden="true">老周肉铺</div>
+        <div class="painted-shop-sign sign-fish" aria-hidden="true">洞庭鱼行</div>
+        <div class="painted-shop-sign sign-tofu" aria-hidden="true">巷口豆坊</div>
+        <div class="painted-shop-sign sign-spice" aria-hidden="true">百味香料</div>
         <div class="tree tree-one">🌳</div><div class="tree tree-two">🌿</div>
       </div>
       <div class="street-ground"><div class="paving"></div><div class="road-centerline"></div></div>
@@ -26,22 +30,61 @@
       <div class="scene-caption"><span class="caption-pin">✦</span><div><b id="streetCaption">沿着青石路慢慢逛</b><small id="streetSubcaption">靠近店铺，看看今天有什么新鲜食材</small></div></div>
       <div class="move-controls"><button id="turnLeft" class="round-control" aria-label="向左">←</button><button id="walkToggle" class="walk-control"><span class="walk-icon">♟</span><span id="walkLabel">按住前进</span></button><button id="turnRight" class="round-control" aria-label="向右">→</button></div>
     </section>
-    <section id="cookScene" class="scene cook-scene hidden" aria-label="第一人称烹饪场景">
-      <div class="kitchen-backdrop"><div class="kitchen-window"><div class="window-lattice"></div><div class="window-view">远山 · 炊烟</div></div><div class="hanging-herbs">🌶️　🧄　🌿</div><div class="shelf"><span>陶罐</span><span>老抽</span><span>米酒</span></div></div>
-      <div class="cook-heading"><div><span class="eyebrow">FIRST-PERSON COOKING</span><h1 id="cookTitle">巷口灶台</h1><p id="cookSubtitle">选一张食材卡，亲手下锅</p></div><button id="backToStreet" class="back-btn">← 回到街巷</button></div>
-      <div class="cook-counter">第 <b id="ingredientCount">0</b> 味食材 <span>·</span> <span id="cookFeedback">灶火正旺，等你掌勺</span></div>
-      <div class="first-person-view"><div class="countertop"></div><div class="pot-shadow"></div><div class="wok"><div class="wok-rim"></div><div class="pot-content" id="potContent"><div class="steam steam1"></div><div class="steam steam2"></div><div class="steam steam3"></div><span class="pot-placeholder">等候食材入锅</span></div><div class="wok-front"></div><div class="wok-handle handle-left"></div><div class="wok-handle handle-right"></div></div><div class="hand hand-left">✋</div><div class="hand hand-right" id="spatulaHand">🥄</div><div class="action-hint" id="actionHint">选择下方卡牌，再做“确认”手势投入锅中</div></div>
-      <div class="ingredient-dock"><div class="dock-header"><div><span class="eyebrow">YOUR INGREDIENT DECK</span><strong>食材卡牌</strong></div><span class="dock-note">点击选牌 · 确认下锅</span></div><div class="ingredient-cards" id="ingredientCards">
-        <button class="ingredient-card selected" data-id="chili" data-name="辣椒" data-color="#d95732"><img src="assets/food-cards/chili_peppers.webp" alt="辣椒卡牌"><span>辣椒</span><small>辛香 · 攻势</small></button>
-        <button class="ingredient-card" data-id="pork" data-name="五花肉" data-color="#b95e45"><img src="assets/food-cards/pork_belly.webp" alt="五花肉卡牌"><span>五花肉</span><small>醇厚 · 肉香</small></button>
-        <button class="ingredient-card" data-id="fish" data-name="鱼头" data-color="#438eaa"><img src="assets/food-cards/fish.webp" alt="鱼头卡牌"><span>鱼头</span><small>鲜味 · 湖鲜</small></button>
-        <button class="ingredient-card" data-id="bacon" data-name="湘西腊肉" data-color="#bd583e"><img src="assets/food-cards/bacon_strips.webp" alt="湘西腊肉卡牌"><span>湘西腊肉</span><small>烟熏 · 腊香</small></button>
-      </div><div class="cook-actions"><button id="addIngredient" class="primary-btn">投入锅中 <span>↓</span></button><button id="stirBtn" class="secondary-btn">🥢 搅拌翻炒</button><button id="fireBtn" class="secondary-btn">🔥 调整火候</button></div></div>
+    <section id="cookScene" class="scene cook-scene hidden" aria-label="俯视第一人称烹饪模拟器">
+      <div class="cook-heading topdown-heading">
+        <div><span class="eyebrow">FIRST-PERSON COOKING</span><h1 id="cookTitle">巷口灶台</h1><p id="cookSubtitle">捏合拿起食材，移动到炒锅上松开</p></div>
+        <button id="backToStreet" class="back-btn" type="button">← 回到街巷</button>
+      </div>
+      <div class="cook-counter topdown-counter"><span>锅中食材</span> <b id="ingredientCount">0</b><span class="counter-sep">·</span><span id="cookFeedback">捏合左侧食材或右侧酱料开始烹饪</span><span class="heat-pill" id="heatIndicator">文火</span></div>
+      <div class="kitchen-workspace" id="kitchenWorkspace" aria-label="俯视案板与炒锅工作台">
+        <div class="worktop-grain" aria-hidden="true"></div>
+        <div class="prep-board" id="prepBoard" aria-label="食材区：对准插画后捏合拿取">
+          <div class="surface-label"><b>食材备菜区</b><small>捏合插画拿取</small></div>
+          <button class="kitchen-object ingredient-object" type="button" data-kitchen-item="pork" data-item-name="五花肉" data-item-kind="ingredient" data-item-emoji="🥩" aria-label="拿取五花肉" style="left:4%;top:17%"><img class="object-art" src="assets/food-illustrations/pork.png" alt=""><span class="object-label">五花肉</span></button>
+          <button class="kitchen-object ingredient-object" type="button" data-kitchen-item="chili" data-item-name="鲜辣椒" data-item-kind="ingredient" data-item-emoji="🌶️" aria-label="拿取鲜辣椒" style="left:47%;top:37%"><img class="object-art" src="assets/food-illustrations/chili.png" alt=""><span class="object-label">鲜辣椒</span></button>
+          <button class="kitchen-object ingredient-object" type="button" data-kitchen-item="greens" data-item-name="青菜" data-item-kind="ingredient" data-item-emoji="🥬" aria-label="拿取青菜" style="left:17%;top:62%"><img class="object-art" src="assets/food-illustrations/greens.png" alt=""><span class="object-label">青菜</span></button>
+        </div>
+
+        <div class="pan-zone" id="wokDropZone" data-kitchen-action="pan" aria-label="炒锅，捏合松开可下锅">
+          <div class="pan-handle"></div>
+          <div class="topdown-wok" id="wokVisual">
+            <div class="wok-outer-rim"></div>
+            <div class="wok-inner" id="potContent"><span class="pot-placeholder">把食材移到锅里松开</span></div>
+            <div class="wok-glint"></div>
+          </div>
+          <div class="fire-glow" id="fireGlow"></div>
+          <div class="pan-label">炒锅 · 松开下料</div>
+        </div>
+
+        <div class="seasoning-rack" id="seasoningRack" aria-label="两种酱料区">
+          <div class="surface-label"><b>酱料与调味</b><small>捏合瓶罐取用</small></div>
+          <button class="kitchen-object sauce-object sauce-soy" type="button" data-kitchen-item="soy" data-item-name="老抽" data-item-kind="sauce" data-item-emoji="🍶" aria-label="取用老抽" style="left:4%;top:0%"><img class="object-art" src="assets/food-illustrations/soy-sauce.png" alt=""><span class="object-label">老抽</span></button>
+          <button class="kitchen-object sauce-object sauce-paste" type="button" data-kitchen-item="douban" data-item-name="豆豉辣酱" data-item-kind="sauce" data-item-emoji="🌶️" aria-label="取用豆豉辣酱" style="left:51%;top:0%"><img class="object-art" src="assets/food-illustrations/chili-paste.png" alt=""><span class="object-label">豆豉辣酱</span></button>
+        </div>
+
+        <button class="kitchen-tool stir-zone" id="stirZone" type="button" aria-label="搅拌区域"><span>🥢</span><small>翻炒区</small></button>
+        <button class="kitchen-tool fire-zone" id="fireZone" type="button" aria-label="火候控制区域"><span>🔥</span><small>捏合调火</small></button>
+        <div class="held-ingredient" id="heldIngredient"><span class="held-caption">手中</span><span class="held-emoji" id="heldEmoji"><span class="held-empty">空手</span></span><b id="heldIngredientName">空手</b></div>
+        <div class="hand-cursor" id="handCursor" aria-hidden="true"><span id="handCursorEmoji">✌️</span></div>
+        <div class="action-hint" id="actionHint">捏合案板食材或酱料拿取；保持捏合移动到炒锅，松开手指下锅</div>
+      </div>
+      <div class="cook-controls topdown-controls"><button id="pickupIngredient" class="secondary-btn" type="button">键盘：拿取 / 下锅</button><button id="stirBtn" class="secondary-btn" type="button">🥢 翻炒</button><button id="fireBtn" class="secondary-btn" type="button">🔥 火候</button><button id="finishDishBtn" class="primary-btn finish-dish-btn" type="button">完成出锅</button></div>
     </section>
+    <div class="modal hidden" id="dishResultModal" role="dialog" aria-modal="true" aria-labelledby="dishResultTitle">
+      <div class="modal-card dish-result-card">
+        <button class="modal-close" id="closeDishResult" type="button" aria-label="关闭成品">×</button>
+        <span class="eyebrow">FRESH FROM THE WOK</span>
+        <h2 id="dishResultTitle">湘味小炒</h2>
+        <img id="dishResultImage" class="dish-result-image" src="assets/finished-dishes/hunan-chili-pork.webp" alt="刚出锅的手绘湘味菜肴">
+        <p id="dishResultSummary" class="dish-result-summary">根据你加入的食材与调味生成本次成品。</p>
+        <div class="dish-result-stats"><span id="dishResultGrade">锅气：初出茅庐</span><span id="dishResultIngredients">食材与酱料：—</span></div>
+        <div class="dish-result-actions"><button id="continueCooking" class="secondary-btn" type="button">继续烹饪</button><button id="serveDishBtn" class="primary-btn" type="button">端菜回街巷</button></div>
+      </div>
+    </div>
   </main>
-  <footer class="gesture-bar"><div class="gesture-status"><span class="camera-dot" id="cameraDot"></span><div><b id="gestureStatus">手势控制已就绪</b><small id="gestureDetail">开启摄像头：握拳持续行走，食指横指转向，双指进入店铺</small></div><button id="cameraToggle" class="camera-toggle" type="button">开启摄像头手势</button></div><div class="gesture-guide"><span><kbd>←</kbd><kbd>→</kbd> 转向</span><span><kbd>↑</kbd> 行走</span><span><kbd>Enter</kbd> 进入 / 下锅</span><span><kbd>Space</kbd> 停止</span></div></footer>
+  <footer class="gesture-bar"><div class="gesture-status"><span class="camera-dot" id="cameraDot"></span><div><b id="gestureStatus">手势控制已就绪</b><small id="gestureDetail">握拳持续行走 · 张掌停止 · 单食指水平指向转向；走到门前再捏合进入，烹饪时对准插画捏合取放</small></div><button id="cameraToggle" class="camera-toggle" type="button">开启摄像头手势</button></div><div class="gesture-guide"><span><kbd>←</kbd><kbd>→</kbd> 转向</span><span><kbd>↑</kbd> 行走</span><span><kbd>Enter</kbd> 进入 / 拿起或下锅</span><span><kbd>Space</kbd> 停止</span></div></footer>
 </div>
-<div class="modal hidden" id="helpModal"><div class="modal-card"><button class="modal-close" id="closeHelp">×</button><span class="eyebrow">HOW TO PLAY</span><h2>用手势逛街、掌勺</h2><p><b>行走：</b>保持你现有识别器定义的“walk”手势，角色持续前进；stop 手势或空手待机时停止。</p><p><b>转向：</b>识别 left / right，切换行走方向。</p><p><b>进入店铺：</b>靠近门口后做 confirm 手势。</p><p><b>烹饪：</b>选中食材卡，做 confirm 下锅；stir 搅拌，fire 调火候。</p><p class="modal-tip">接入现有识别代码时，可调用 <code>window.handleRecognizedGesture('walk')</code> 等接口，不需要重新做摄像头识别。</p><button id="closeHelpBottom" class="primary-btn">知道了</button></div></div>
-<aside id="cameraPanel" class="camera-panel hidden"><div class="camera-panel-head"><b>手势识别</b><button id="cameraClose" type="button" aria-label="关闭摄像头">×</button></div><video id="gestureVideo" autoplay playsinline muted></video><p id="cameraHint">将手放在镜头中，保持动作约半秒</p></aside>
+<div class="modal hidden" id="helpModal"><div class="modal-card"><button class="modal-close" id="closeHelp">×</button><span class="eyebrow">HOW TO PLAY</span><h2>用手势逛街、掌勺</h2><p><b>行走：</b>握拳保持前进，张开手掌停止。</p><p><b>转向：</b>在镜像摄像头里只伸食指并明确横向指左 / 右，保持约半秒。</p><p><b>进入店铺：</b>小熊走到店门口出现提示后，拇指与食指捏合并保持，才会进入店铺；V 手势不会触发进入。</p><p><b>第一人称烹饪：</b>捏合左侧插画食材或右侧酱料拿起，保持捏合移动到中央炒锅后松开下料。捏合火候区可调火，捏合翻炒区或三指动作可翻炒。加入至少两样并翻炒后，点击“完成出锅”生成成品。</p><p class="modal-tip">接入现有识别代码时，可调用 <code>window.handleRecognizedGesture('walk')</code> 等接口，不需要重新做摄像头识别。</p><button id="closeHelpBottom" class="primary-btn">知道了</button></div></div>
+<aside id="cameraPanel" class="camera-panel hidden"><div class="camera-panel-head"><b>手势识别</b><button id="cameraClose" type="button" aria-label="关闭摄像头">×</button></div><video id="gestureVideo" autoplay playsinline muted></video><p id="cameraHint">镜像画面：横向伸食指转向；门口捏合进入；烹饪时捏合取料、移动至锅中松开</p></aside>
 <script src="gameplay.js"></script>
 </body></html>
