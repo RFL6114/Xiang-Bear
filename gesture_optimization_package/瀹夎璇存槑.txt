@@ -1,0 +1,26 @@
+湘味寻宝｜小熊手势优化安装说明
+
+本次只需要替换 gameplay.js，不需要替换 gameplay.html，也不需要覆盖 gameplay.css 或 assets。
+
+安装步骤：
+1. 先备份你项目里的 D:\hunan flavour xiong\gameplay.js，例如复制为 gameplay.backup.js。
+2. 将压缩包内的 gameplay.js 复制到项目根目录 D:\hunan flavour xiong\。
+3. 确认覆盖的是 gameplay.js（不要覆盖 gameplay.html 或 gameplay.css）。
+4. 用浏览器通过 localhost 或 HTTPS 打开游戏，点击“开启摄像头手势”测试。
+5. 如果结果不合适，关闭游戏后把 gameplay.backup.js 改回 gameplay.js 即可回滚。
+
+当前手势映射：
+- 握拳：持续沿当前方向走。
+- 张开手掌：停止。
+- 只伸食指并横向指左/右：转向。
+- 竖起食指，或同时伸出食指和中指：确认进入 / 食材下锅。
+- 伸出食指、中指和无名指：搅拌。
+- 四指伸展、拇指收拢：调整火候。
+
+主要优化：
+- 根据相对手腕的指尖距离判断手指伸展，降低手部倾斜时的误判。
+- 对连续多帧识别结果做平滑，并要求保持动作一段时间才触发。
+- 一个动作只触发一次；切换姿势或回到中性姿势后可再次触发。
+- 摄像头短暂丢失手部时不立即停走；持续丢失约 0.35 秒后安全停止。
+- 关闭摄像头时会停止小熊行走，避免角色继续移动。
+- 保留 window.handleRecognizedGesture 等现有接口及页面结构。
